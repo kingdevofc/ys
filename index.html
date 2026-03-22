@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ysla Marinho - Nail Design Experience</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bege-claro: #FDF8F5;
+            --bege-medio: #F2E8DF;
+            --bege-escuro: #E5D3C5;
+            --marrom: #3E2723;
+            --marrom-suave: #8D6E63;
+            --transicao: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bege-claro);
+            color: var(--marrom);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        #barra-progresso {
+            position: fixed;
+            top: 0; left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--marrom-suave);
+            z-index: 9999;
+        }
+
+        .aba { display: none; opacity: 0; }
+        .aba.ativa { display: block; opacity: 1; animation: fadeEntrada 0.8s ease; }
+
+        @keyframes fadeEntrada {
+            from { opacity: 0; filter: blur(5px); }
+            to { opacity: 1; filter: blur(0); }
+        }
+
+        .revelar {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transicao);
+        }
+        .revelar.visivel {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .secao-conteudo {
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; text-align: center; }
+
+        h1, h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(2.5rem, 10vw, 4rem); 
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        /* Estilização das Imagens */
+        .foto-container {
+            width: 100%;
+            height: auto;
+            max-height: 650px;
+            margin: 40px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            background-color: var(--bege-escuro);
+        }
+
+        .foto-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que a foto preencha o espaço sem deformar */
+            display: block;
+            transition: transform 0.8s ease;
+        }
+
+        .foto-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .galeria-grade {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+            width: 100%;
+        }
+        
+        .galeria-grade .foto-container { height: 450px; margin: 0; }
+
+        .texto-longo {
+            font-size: 1.1rem;
+            max-width: 750px;
+            margin: 0 auto 50px auto;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .area-botao-final {
+            padding: 100px 0;
+            background-color: var(--bege-medio);
+            text-align: center;
+            clip-path: ellipse(150% 100% at 50% 100%);
+        }
+
+        .btn-proximo {
+            padding: 20px 60px;
+            background-color: var(--marrom);
+            color: white;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: var(--transicao);
+        }
+
+        .btn-proximo:hover {
+            background-color: var(--marrom-suave);
+            transform: translateY(-3px);
+        }
+
+        .grid-cores {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 40px 0;
+        }
+        .circulo-cor { 
+            width: 60px; height: 60px; 
+            border-radius: 50%; 
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="barra-progresso"></div>
+
+    <!-- ABA 1: CAPA -->
+    <div id="aba-1" class="aba ativa">
+        <section class="secao-conteudo">
+            <div class="container revelar">
+                <p style="letter-spacing: 5px; color: var(--marrom-suave); margin-bottom: 10px;">EXPERIÊNCIA EXCLUSIVA</p>
+                <h1>Ysla Marinho</h1>
+                <div class="foto-container">
+                    <img src="logo-capa.jpg" alt="Logo Ysla Marinho Beauty Nails">
+                </div>
+                <p class="texto-longo">Imagine unhas que não são apenas acessórios, mas uma extensão da sua personalidade. Aqui, cada detalhe é esculpido com precisão e cuidado.</p>
+            </div>
+        </section>
+
+        <section class="secao-conteudo" style="background-color: #F8F1ED;">
+            <div class="container revelar">
+                <h2>A Experiência</h2>
+                <div class="foto-container">
+                    <img src="ambiente.jpg" alt="Ambiente sofisticado com capuccino">
+                </div>
+                <p class="texto-longo">Um momento só seu. Ambiente climatizado, atendimento exclusivo e os melhores materiais do mercado mundial.</p>
+            </div>
+        </section>
+
+        <div class="area-botao-final revelar">
+            <button class="btn-proximo" onclick="mudarAba('aba-2')">Ver Meu Portfólio</button>
+        </div>
+    </div>
+
+    <!-- ABA 2: CONTRACAPA -->
+    <div id="aba-2" class="aba">
+        <section class="secao-conteudo">
+            <div class="container revelar">
+                <h2>Galeria de Arte</h2>
+                <p>O que minhas clientes estão usando hoje.</p>
+                
+                <div class="galeria-grade">
+                    <div class="foto-container"><img src="unha1.jpg" alt="Trabalho Nail Design 1"></div>
+                    <div class="foto-container"><img src="unha2.jpg" alt="Trabalho Nail Design 2"></div>
+                    <div class="foto-container"><img src="unha3.jpg" alt="Trabalho Nail Design 3"></div>
+                    <div class="foto-container"><img src="unha4.jpg" alt="Trabalho Nail Design 4"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="secao-conteudo" style="background-color: var(--marrom); color: var(--bege-claro);">
+            <div class="container revelar">
+                <h2 style="color: var(--bege-claro);">Durabilidade & Brilho</h2>
+                <div class="foto-container">
+                    <img src="antes-depois.jpg" alt="Antes e Depois Nail Design">
+                </div>
+                <p class="texto-longo">Técnicas que garantem unhas perfeitas por até 25 dias. Sem descascar, sem perder o brilho.</p>
+            </div>
+        </section>
+
+        <div class="area-botao-final revelar">
+            <button class="btn-proximo" onclick="mudarAba('aba-3')">Ir para Plano de Ação</button>
+        </div>
+    </div>
+
+    <!-- ABA 3: PLANO DE AÇÃO -->
+    <div id="aba-3" class="aba">
+        <section class="secao-conteudo">
+            <div class="container revelar">
+                <h2>Plano de Ação</h2>
+                <p>Escolha seu estilo e agende.</p>
+                
+                <div class="grid-cores">
+                    <div class="circulo-cor" style="background: #D4A5A5;"></div>
+                    <div class="circulo-cor" style="background: #9A7B7B;"></div>
+                    <div class="circulo-cor" style="background: #E3C4A8;"></div>
+                    <div class="circulo-cor" style="background: #F2D1C9;"></div>
+                    <div class="circulo-cor" style="background: #FFFFFF;"></div>
+                    <div class="circulo-cor" style="background: #000000;"></div>
+                </div>
+
+                <p class="texto-longo">Trabalhamos com agendamento prévio para garantir a qualidade do seu atendimento.</p>
+            </div>
+        </section>
+
+        <div class="area-botao-final revelar" style="background: white;">
+            <h2>Tudo pronto?</h2>
+            <p style="margin-bottom: 40px;">Clique abaixo para falar comigo no WhatsApp.</p>
+            <button class="btn-proximo" onclick="window.location.href='https://wa.me/SEUNUMERO'">Agendar Agora</button>
+        </div>
+    </div>
+
+    <script>
+        function mudarAba(idProxima) {
+            document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
+            const proxima = document.getElementById(idProxima);
+            proxima.classList.add('ativa');
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            verificarRevelacao();
+        }
+
+        function verificarRevelacao() {
+            const observador = new IntersectionObserver((entradas) => {
+                entradas.forEach(entrada => {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add('visivel');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.revelar').forEach(item => observador.observe(item));
+        }
+
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("barra-progresso").style.width = scrolled + "%";
+        };
+
+        verificarRevelacao();
+    </script>
+</body>
+</html>
