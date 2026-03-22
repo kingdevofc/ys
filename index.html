@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ysla Marinho - Nail Design Experience</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <!-- Fontes Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,600&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Ícones de Traço Fino -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <style>
         :root {
@@ -14,10 +18,11 @@
             --bege-escuro: #E5D3C5;
             --marrom: #3E2723;
             --marrom-suave: #8D6E63;
-            --transicao: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            --branco-luz: #FFFFFF;
+            --transicao-premium: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         
         body {
             font-family: 'Montserrat', sans-serif;
@@ -27,27 +32,75 @@
             scroll-behavior: smooth;
         }
 
+        /* --- CURSOR RELUZENTE --- */
+        #custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--branco-luz);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease-out;
+            box-shadow: 0 0 15px var(--branco-luz);
+        }
+
         #barra-progresso {
             position: fixed;
             top: 0; left: 0;
             width: 0%;
-            height: 4px;
-            background: var(--marrom-suave);
+            height: 5px;
+            background: var(--branco-luz);
             z-index: 9999;
+            box-shadow: 0 0 20px var(--branco-luz);
         }
 
-        .aba { display: none; opacity: 0; }
-        .aba.ativa { display: block; opacity: 1; animation: fadeEntrada 0.8s ease; }
+        /* --- ELEMENTOS DE PREENCHIMENTO SEM TEXTURA (GLOWS) --- */
+        .luz-fundo {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .bg-text {
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18vw;
+            color: rgba(62, 39, 35, 0.04);
+            font-weight: 700;
+            z-index: 0;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+            letter-spacing: -5px;
+        }
+
+        /* --- LINHA GUIA ELEGANTE --- */
+        .linha-guia {
+            width: 1px;
+            height: 120px;
+            background: linear-gradient(to bottom, transparent, var(--marrom-suave), transparent);
+            margin: 60px auto;
+            opacity: 0.6;
+        }
+
+        .aba { display: none; opacity: 0; position: relative; }
+        .aba.ativa { display: block; opacity: 1; animation: fadeEntrada 1s ease-out; }
 
         @keyframes fadeEntrada {
-            from { opacity: 0; filter: blur(5px); }
+            from { opacity: 0; filter: blur(10px); }
             to { opacity: 1; filter: blur(0); }
         }
 
         .revelar {
             opacity: 0;
-            transform: translateY(40px);
-            transition: var(--transicao);
+            transform: translateY(50px);
+            transition: var(--transicao-premium);
         }
         .revelar.visivel {
             opacity: 1;
@@ -55,175 +108,231 @@
         }
 
         .secao-conteudo {
-            padding: 80px 20px;
+            padding: 100px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 90vh;
+            min-height: 95vh;
+            position: relative;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; text-align: center; }
+        .container { max-width: 1100px; margin: 0 auto; text-align: center; z-index: 2; }
 
         h1, h2 { 
-            font-family: 'Playfair Display', serif; 
-            font-size: clamp(2.5rem, 10vw, 4rem); 
-            margin-bottom: 25px;
-            letter-spacing: 1px;
+            font-family: 'Cormorant Garamond', serif; 
+            font-weight: 700;
+            font-size: clamp(3.5rem, 12vw, 6rem);
+            margin-bottom: 30px;
+            line-height: 0.85;
+            letter-spacing: -2px;
         }
 
-        /* Estilização das Imagens */
+        /* --- MOLDURAS E FOTOS --- */
+        .foto-wrapper { position: relative; margin: 60px 0; width: 100%; display: flex; justify-content: center; }
+
         .foto-container {
             width: 100%;
-            height: auto;
-            max-height: 650px;
-            margin: 40px 0;
-            border-radius: 15px;
+            max-width: 900px;
+            border-radius: 25px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            background-color: var(--bege-escuro);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            outline: 1px solid var(--marrom-suave);
+            outline-offset: 18px;
+            background: var(--bege-escuro);
         }
 
-        .foto-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Garante que a foto preencha o espaço sem deformar */
-            display: block;
-            transition: transform 0.8s ease;
+        .foto-container img { width: 100%; display: block; transition: 1.5s ease; }
+
+        /* --- CARDS DE DETALHE (GLASS) --- */
+        .detalhe-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--branco-luz);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            max-width: 220px;
+            text-align: left;
+            z-index: 3;
+            bottom: -40px;
+            right: 8%;
         }
 
-        .foto-container:hover img {
-            transform: scale(1.05);
+        .detalhe-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--marrom); }
+        .detalhe-card p { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--marrom-suave); }
+
+        .icon-box {
+            font-size: 3.5rem;
+            color: var(--branco-luz) !important;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
         }
 
         .galeria-grade {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 50px;
+            margin: 60px 0;
             width: 100%;
         }
         
-        .galeria-grade .foto-container { height: 450px; margin: 0; }
+        .galeria-grade .foto-container { height: 500px; outline-offset: 12px; }
 
         .texto-longo {
-            font-size: 1.1rem;
-            max-width: 750px;
-            margin: 0 auto 50px auto;
-            line-height: 1.8;
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
             font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
         .area-botao-final {
-            padding: 100px 0;
+            padding: 140px 0;
             background-color: var(--bege-medio);
             text-align: center;
             clip-path: ellipse(150% 100% at 50% 100%);
         }
 
+        /* --- BOTÃO RELUZENTE --- */
         .btn-proximo {
-            padding: 20px 60px;
+            padding: 25px 80px;
             background-color: var(--marrom);
             color: white;
-            border: none;
+            border: 2px solid var(--branco-luz);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 5px;
             font-weight: 600;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: var(--transicao);
+            border-radius: 80px;
+            transition: var(--transicao-premium);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 5;
         }
 
         .btn-proximo:hover {
-            background-color: var(--marrom-suave);
-            transform: translateY(-3px);
+            transform: translateY(-8px);
+            box-shadow: 0 0 40px var(--branco-luz);
+            background: var(--marrom-suave);
         }
 
         .grid-cores {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
-            margin: 40px 0;
+            gap: 20px;
+            margin: 60px 0;
         }
         .circulo-cor { 
-            width: 60px; height: 60px; 
+            width: 75px; height: 75px; 
             border-radius: 50%; 
-            border: 2px solid white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: 0.5s;
+        }
+        .circulo-cor:hover { transform: scale(1.2) rotate(15deg); box-shadow: 0 0 30px var(--branco-luz); }
+
+        @media (max-width: 768px) {
+            #custom-cursor, .bg-text, .luz-fundo { display: none; }
+            * { cursor: auto; }
+            .detalhe-card { position: relative; right: 0; margin: 30px auto; }
+            h1, h2 { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
+    <div id="custom-cursor"></div>
     <div id="barra-progresso"></div>
 
     <!-- ABA 1: CAPA -->
     <div id="aba-1" class="aba ativa">
+        <div class="luz-fundo" style="top: -10%; left: -10%;"></div>
+        <span class="bg-text" style="top: 15%; left: -2%;">PREMIUM</span>
+        
         <section class="secao-conteudo">
             <div class="container revelar">
-                <p style="letter-spacing: 5px; color: var(--marrom-suave); margin-bottom: 10px;">EXPERIÊNCIA EXCLUSIVA</p>
+                <i class="ph ph-sparkle icon-box"></i>
+                <p style="letter-spacing: 10px; color: var(--marrom-suave); margin-bottom: 25px; font-weight: 600; font-size: 0.75rem;">THE NAIL EXPERIENCE</p>
                 <h1>Ysla Marinho</h1>
-                <div class="foto-container">
-                    <img src="logo-capa.jpg" alt="Logo Ysla Marinho Beauty Nails">
+                
+                <div class="foto-wrapper">
+                    <div class="foto-container"><img src="logo-capa.jpg" alt="Logo"></div>
+                    <div class="detalhe-card revelar">
+                        <h4>Luxo & Cuidado</h4>
+                        <p>Atendimento Individualizado</p>
+                    </div>
                 </div>
-                <p class="texto-longo">Imagine unhas que não são apenas acessórios, mas uma extensão da sua personalidade. Aqui, cada detalhe é esculpido com precisão e cuidado.</p>
+
+                <div class="linha-guia"></div>
+                <p class="texto-longo">Imagine unhas que não são apenas acessórios, mas uma extensão da sua personalidade.</p>
             </div>
         </section>
 
-        <section class="secao-conteudo" style="background-color: #F8F1ED;">
+        <section class="secao-conteudo" style="background-color: rgba(248, 241, 237, 0.5);">
+            <div class="luz-fundo" style="bottom: 0; right: -10%;"></div>
+            <span class="bg-text" style="top: 30%; right: -2%;">STUDIO</span>
             <div class="container revelar">
+                <i class="ph ph-coffee icon-box"></i>
                 <h2>A Experiência</h2>
-                <div class="foto-container">
-                    <img src="ambiente.jpg" alt="Ambiente sofisticado com capuccino">
+                <div class="foto-wrapper">
+                    <div class="foto-container"><img src="ambiente.jpg" alt="Ambiente"></div>
                 </div>
-                <p class="texto-longo">Um momento só seu. Ambiente climatizado, atendimento exclusivo e os melhores materiais do mercado mundial.</p>
+                <p class="texto-longo">Um momento de pausa e sofisticação projetado para você.</p>
             </div>
         </section>
 
         <div class="area-botao-final revelar">
-            <button class="btn-proximo" onclick="mudarAba('aba-2')">Ver Meu Portfólio</button>
+            <button class="btn-proximo" onclick="mudarAba('aba-2')">Conhecer Arte</button>
         </div>
     </div>
 
     <!-- ABA 2: CONTRACAPA -->
     <div id="aba-2" class="aba">
+        <span class="bg-text" style="top: 10%; right: -5%;">GALLERY</span>
         <section class="secao-conteudo">
             <div class="container revelar">
+                <i class="ph ph-palette icon-box"></i>
                 <h2>Galeria de Arte</h2>
-                <p>O que minhas clientes estão usando hoje.</p>
-                
                 <div class="galeria-grade">
-                    <div class="foto-container"><img src="unha1.jpg" alt="Trabalho Nail Design 1"></div>
-                    <div class="foto-container"><img src="unha2.jpg" alt="Trabalho Nail Design 2"></div>
-                    <div class="foto-container"><img src="unha3.jpg" alt="Trabalho Nail Design 3"></div>
-                    <div class="foto-container"><img src="unha4.jpg" alt="Trabalho Nail Design 4"></div>
+                    <div class="foto-container revelar"><img src="unha1.jpg" alt="Nail 1"></div>
+                    <div class="foto-container revelar"><img src="unha2.jpg" alt="Nail 2"></div>
+                    <div class="foto-container revelar"><img src="unha3.jpg" alt="Nail 3"></div>
+                    <div class="foto-container revelar"><img src="unha4.jpg" alt="Nail 4"></div>
                 </div>
             </div>
         </section>
 
         <section class="secao-conteudo" style="background-color: var(--marrom); color: var(--bege-claro);">
             <div class="container revelar">
-                <h2 style="color: var(--bege-claro);">Durabilidade & Brilho</h2>
-                <div class="foto-container">
-                    <img src="antes-depois.jpg" alt="Antes e Depois Nail Design">
+                <i class="ph ph-crown icon-box"></i>
+                <h2 style="color: var(--bege-claro);">Durabilidade</h2>
+                <div class="foto-wrapper">
+                    <div class="foto-container" style="outline-color: var(--bege-escuro);">
+                        <img src="antes-depois.jpg" alt="Transformação">
+                    </div>
+                    <div class="detalhe-card" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-color: rgba(255,255,255,0.2);">
+                        <h4 style="color: white;">Resistência</h4>
+                        <p style="color: var(--bege-escuro);">Acabamento Impecável</p>
+                    </div>
                 </div>
-                <p class="texto-longo">Técnicas que garantem unhas perfeitas por até 25 dias. Sem descascar, sem perder o brilho.</p>
             </div>
         </section>
 
         <div class="area-botao-final revelar">
-            <button class="btn-proximo" onclick="mudarAba('aba-3')">Ir para Plano de Ação</button>
+            <button class="btn-proximo" onclick="mudarAba('aba-3')">Próximo Passo</button>
         </div>
     </div>
 
     <!-- ABA 3: PLANO DE AÇÃO -->
     <div id="aba-3" class="aba">
+        <span class="bg-text" style="bottom: 10%; left: -2%;">BOOKING</span>
         <section class="secao-conteudo">
             <div class="container revelar">
+                <i class="ph ph-calendar-check icon-box"></i>
                 <h2>Plano de Ação</h2>
-                <p>Escolha seu estilo e agende.</p>
-                
-                <div class="grid-cores">
+                <div class="grid-cores revelar">
                     <div class="circulo-cor" style="background: #D4A5A5;"></div>
                     <div class="circulo-cor" style="background: #9A7B7B;"></div>
                     <div class="circulo-cor" style="background: #E3C4A8;"></div>
@@ -231,25 +340,31 @@
                     <div class="circulo-cor" style="background: #FFFFFF;"></div>
                     <div class="circulo-cor" style="background: #000000;"></div>
                 </div>
-
-                <p class="texto-longo">Trabalhamos com agendamento prévio para garantir a qualidade do seu atendimento.</p>
+                <div class="linha-guia"></div>
+                <p class="texto-longo">Sua transformação exclusiva está a um toque de distância.</p>
             </div>
         </section>
 
         <div class="area-botao-final revelar" style="background: white;">
-            <h2>Tudo pronto?</h2>
-            <p style="margin-bottom: 40px;">Clique abaixo para falar comigo no WhatsApp.</p>
-            <button class="btn-proximo" onclick="window.location.href='https://wa.me/SEUNUMERO'">Agendar Agora</button>
+            <i class="ph ph-whatsapp-logo icon-box" style="color: #25D366 !important; font-size: 4rem;"></i>
+            <h2>Agendar Agora</h2>
+            <button class="btn-proximo" onclick="window.location.href='https://wa.me/5500000000000'">Reservar Horário</button>
         </div>
     </div>
 
     <script>
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
         function mudarAba(idProxima) {
             document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
             const proxima = document.getElementById(idProxima);
             proxima.classList.add('ativa');
             window.scrollTo({ top: 0, behavior: 'instant' });
-            verificarRevelacao();
+            setTimeout(verificarRevelacao, 100);
         }
 
         function verificarRevelacao() {
@@ -259,16 +374,22 @@
                         entrada.target.classList.add('visivel');
                     }
                 });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.15 });
 
             document.querySelectorAll('.revelar').forEach(item => observador.observe(item));
         }
 
         window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let winScroll = window.pageYOffset;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             let scrolled = (winScroll / height) * 100;
             document.getElementById("barra-progresso").style.width = scrolled + "%";
+
+            // Parallax sutil nos textos gigantes de fundo
+            document.querySelectorAll('.bg-text').forEach((text, index) => {
+                let speed = (index + 1) * 0.15;
+                text.style.transform = `translateX(${winScroll * speed}px)`;
+            });
         };
 
         verificarRevelacao();
