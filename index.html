@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ysla Marinho - Nail Design Experience</title>
     
-    <!-- Fontes Premium -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,600&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
     
-    <!-- Ícones de Traço Fino -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <style>
@@ -133,6 +131,7 @@
         .foto-container {
             width: 100%;
             max-width: 900px;
+            height: 500px; /* Definimos uma altura para controlar o preenchimento */
             border-radius: 25px;
             overflow: hidden;
             box-shadow: 0 30px 60px rgba(0,0,0,0.1);
@@ -141,7 +140,13 @@
             background: var(--bege-escuro);
         }
 
-        .foto-container img { width: 100%; display: block; transition: 1.5s ease; }
+        .foto-container img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; /* ISSO FAZ A IMAGEM COBRIR O ESPAÇO TODO SEM DISTORCER */
+            display: block; 
+            transition: 1.5s ease; 
+        }
 
         /* --- CARDS DE DETALHE (GLASS) --- */
         .detalhe-card {
@@ -195,7 +200,6 @@
             clip-path: ellipse(150% 100% at 50% 100%);
         }
 
-        /* --- BOTÃO RELUZENTE --- */
         .btn-proximo {
             padding: 25px 80px;
             background-color: var(--marrom);
@@ -233,11 +237,26 @@
         }
         .circulo-cor:hover { transform: scale(1.2) rotate(15deg); box-shadow: 0 0 30px var(--branco-luz); }
 
+        /* AJUSTES MOBILE CORRIGIDOS */
         @media (max-width: 768px) {
             #custom-cursor, .bg-text, .luz-fundo { display: none; }
             * { cursor: auto; }
-            .detalhe-card { position: relative; right: 0; margin: 30px auto; }
-            h1, h2 { font-size: 3.5rem; }
+            
+            /* Ajuste da logo/imagens no mobile para cobrir tudo */
+            .foto-container { 
+                height: 350px; /* Reduzi um pouco a altura para telas pequenas */
+                outline-offset: 8px; /* Borda mais próxima para não vazar a tela */
+            }
+
+            .detalhe-card { 
+                position: relative; 
+                right: 0; 
+                margin: 20px auto; 
+                bottom: 0;
+                width: 90%;
+            }
+
+            h1, h2 { font-size: 3rem; }
         }
     </style>
 </head>
@@ -246,7 +265,6 @@
     <div id="custom-cursor"></div>
     <div id="barra-progresso"></div>
 
-    <!-- ABA 1: CAPA -->
     <div id="aba-1" class="aba ativa">
         <div class="luz-fundo" style="top: -10%; left: -10%;"></div>
         <span class="bg-text" style="top: 15%; left: -2%;">PREMIUM</span>
@@ -288,7 +306,6 @@
         </div>
     </div>
 
-    <!-- ABA 2: CONTRACAPA -->
     <div id="aba-2" class="aba">
         <span class="bg-text" style="top: 10%; right: -5%;">GALLERY</span>
         <section class="secao-conteudo">
@@ -325,7 +342,6 @@
         </div>
     </div>
 
-    <!-- ABA 3: PLANO DE AÇÃO -->
     <div id="aba-3" class="aba">
         <span class="bg-text" style="bottom: 10%; left: -2%;">BOOKING</span>
         <section class="secao-conteudo">
@@ -385,7 +401,6 @@
             let scrolled = (winScroll / height) * 100;
             document.getElementById("barra-progresso").style.width = scrolled + "%";
 
-            // Parallax sutil nos textos gigantes de fundo
             document.querySelectorAll('.bg-text').forEach((text, index) => {
                 let speed = (index + 1) * 0.15;
                 text.style.transform = `translateX(${winScroll * speed}px)`;
