@@ -84,16 +84,14 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Ícone do Pincel */
         #custom-cursor::after {
-            content: '\e912'; /* Código do ícone 'paint-brush-broad' do Phosphor */
+            content: '\e912';
             font-family: "Phosphor";
             font-size: 24px;
             color: var(--marrom);
             filter: drop-shadow(0 0 5px var(--dourado-brilho));
         }
 
-        /* Partícula de Brilho Dinâmica */
         .brilho {
             position: fixed;
             width: 4px;
@@ -119,7 +117,6 @@
             box-shadow: 0 0 20px var(--branco-luz);
         }
 
-        /* --- ÍCONES GERAIS (MARROM) --- */
         .icon-box {
             font-size: 3.5rem;
             color: var(--marrom-suave) !important;
@@ -127,7 +124,6 @@
             filter: drop-shadow(0 4px 8px rgba(62, 39, 35, 0.1));
         }
 
-        /* --- ELEMENTOS DE PREENCHIMENTO --- */
         .luz-fundo {
             position: absolute;
             width: 600px;
@@ -209,6 +205,7 @@
             outline: 1px solid var(--marrom-suave);
             outline-offset: 18px;
             background: var(--bege-escuro);
+            position: relative; /* Necessário para o slide */
         }
 
         .foto-container img { 
@@ -217,6 +214,21 @@
             object-fit: cover; 
             display: block; 
             transition: 1.5s ease; 
+        }
+
+        /* AJUSTE DO SLIDER */
+        .slide-ambiente {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .slide-ambiente.active {
+            opacity: 1;
         }
 
         .detalhe-card {
@@ -324,16 +336,22 @@
         }
         .circulo-cor:hover { transform: scale(1.2) rotate(15deg); box-shadow: 0 0 30px var(--branco-luz); }
 
+        /* --- MOBILE ADJUSTMENTS --- */
         @media (max-width: 768px) {
             #custom-cursor, .bg-text, .luz-fundo { display: none; }
             * { cursor: auto; }
             .header-top { padding: 20px; }
             
-            /* AREA DA LOGO NA VERTICAL NO MOBILE IGUAL DESKTOP */
-            .foto-container { height: 450px !important; outline-offset: 12px; }
+            .foto-container { 
+                height: auto !important; 
+                aspect-ratio: 16 / 9; 
+                width: 100%; 
+                outline-offset: 8px; 
+            }
             
             .galeria-grade { grid-template-columns: 1fr; gap: 40px; }
             .galeria-grade .foto-container { height: auto; aspect-ratio: 1 / 1; width: 100%; }
+            
             .detalhe-card { position: relative; right: 0; margin: 20px auto; bottom: 0; width: 90%; }
             h1, h2 { font-size: 3rem; }
             .jornada-grid { grid-template-columns: 1fr; }
@@ -383,7 +401,12 @@
                 <i class="ph ph-coffee icon-box"></i>
                 <h2>A Experiência</h2>
                 <div class="foto-wrapper">
-                    <div class="foto-container"><img src="ambiente.jpg" alt="Ambiente Studio"></div>
+                    <div class="foto-container" id="ambiente-slider">
+                        <img src="ambiente1.jpg" alt="Ambiente Studio 1" class="slide-ambiente active">
+                        <img src="ambiente2.jpg" alt="Ambiente Studio 2" class="slide-ambiente">
+                        <img src="ambiente3.jpg" alt="Ambiente Studio 3" class="slide-ambiente">
+                        <img src="ambiente4.jpg" alt="Ambiente Studio 4" class="slide-ambiente">
+                    </div>
                 </div>
                 <p class="texto-longo">Um momento de pausa e sofisticação projetado para você.</p>
             </div>
@@ -477,7 +500,7 @@
                 <div class="faq-container revelar">
                     <div class="faq-item">
                         <h4>Qual a durabilidade do procedimento?</h4>
-                        <p>Com técnicas avançadas e o uso de produtos de alta aderência, proporcionamos um acabamento impecável com durabilidade média de 20 a 25 dias. No entanto, esse período pode variar de acordo com os cuidados individuais de cada cliente.</p>
+                        <p>Com técnicas avançadas e o uso de produtos de alta aderência, proporcionamos um acabamento impecável com durabilidade média de 20 a 25 dias.</p>
                     </div>
                     <div class="faq-item">
                         <h4>A técnica danifica as unhas naturais?</h4>
@@ -485,7 +508,7 @@
                     </div>
                     <div class="faq-item">
                         <h4>Qual o tempo médio de atendimento?</h4>
-                        <p>Prezamos pela perfeição. Cada atendimento dura entre 1h30 a 2h30, dependendo da complexidade da arte escolhida.</p>
+                        <p>Prezamos pela perfeição. Cada atendimento dura entre 1h30 a 2h30.</p>
                     </div>
                 </div>
             </div>
@@ -500,12 +523,12 @@
     </div>
 
     <script>
+        // CURSOR E BRILHO
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
             
-            // Criar rastro de brilho
             if (Math.random() > 0.7) {
                 const brilho = document.createElement('div');
                 brilho.className = 'brilho';
@@ -516,6 +539,7 @@
             }
         });
 
+        // TROCA DE ABAS
         function mudarAba(idProxima) {
             document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
             const proxima = document.getElementById(idProxima);
@@ -524,6 +548,7 @@
             setTimeout(verificarRevelacao, 100);
         }
 
+        // REVELAÇÃO NO SCROLL
         function verificarRevelacao() {
             const observador = new IntersectionObserver((entradas) => {
                 entradas.forEach(entrada => {
@@ -536,6 +561,7 @@
             document.querySelectorAll('.revelar').forEach(item => observador.observe(item));
         }
 
+        // PROGRESSO E PARALLAX TEXTO
         window.onscroll = function() {
             let winScroll = window.pageYOffset;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -547,7 +573,21 @@
                 text.style.transform = `translateX(${winScroll * speed}px)`;
             });
         };
+
+        // LÓGICA DO SLIDER AUTOMÁTICO
+        let slideIndex = 0;
+        function autoSlider() {
+            const slides = document.querySelectorAll('.slide-ambiente');
+            slides.forEach(s => s.classList.remove('active'));
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].classList.add('active');
+            setTimeout(autoSlider, 4000); // Troca a cada 4 segundos
+        }
+
+        // INICIALIZAÇÃO
         verificarRevelacao();
+        autoSlider();
     </script>
 </body>
 </html>
