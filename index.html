@@ -341,17 +341,16 @@
             * { cursor: auto; }
             .header-top { padding: 20px; }
             
-            /* AJUSTE LOGO E ANTES/DEPOIS NO MOBILE */
-            .foto-container { 
-                height: 400px !important; /* Altura maior para evitar cortes */
-                aspect-ratio: 4 / 5; /* Proporção mais vertical para destacar a arte */
-                width: 100%; 
-                outline-offset: 8px; 
+            /* Ajustes focados apenas nas classes solicitadas */
+            .foto-logo-mobile, .foto-antes-depois-mobile { 
+                height: 450px !important; 
+                width: 100% !important;
+                outline-offset: 10px !important;
             }
             
-            /* Ajuste específico para as unhas na galeria manterem o quadrado */
+            .foto-container { height: auto; aspect-ratio: 16 / 9; width: 100%; outline-offset: 8px; }
             .galeria-grade { grid-template-columns: 1fr; gap: 40px; }
-            .galeria-grade .foto-container { height: auto !important; aspect-ratio: 1 / 1; width: 100%; }
+            .galeria-grade .foto-container { height: auto; aspect-ratio: 1 / 1; width: 100%; }
             
             .detalhe-card { position: relative; right: 0; margin: 20px auto; bottom: 0; width: 90%; }
             h1, h2 { font-size: 3rem; }
@@ -383,7 +382,7 @@
                 <h1>Ysla Marinho</h1>
                 
                 <div class="foto-wrapper">
-                    <div class="foto-container"><img src="logo-capa.jpg" alt="Logo Ysla Marinho"></div>
+                    <div class="foto-container foto-logo-mobile"><img src="logo-capa.jpg" alt="Logo Ysla Marinho"></div>
                     <div class="detalhe-card revelar">
                         <h4>Luxo & Cuidado</h4>
                         <p>Atendimento Individualizado</p>
@@ -438,7 +437,7 @@
                 <i class="ph ph-crown icon-box" style="color: var(--branco-luz) !important; filter: drop-shadow(0 0 15px var(--branco-luz));"></i>
                 <h2 style="color: var(--bege-claro);">Naturalidade e Excelência</h2>
                 <div class="foto-wrapper">
-                    <div class="foto-container" style="outline-color: var(--bege-escuro);">
+                    <div class="foto-container foto-antes-depois-mobile" style="outline-color: var(--bege-escuro);">
                         <img src="antes-depois.jpg" alt="Transformação">
                     </div>
                     <div class="detalhe-card" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-color: rgba(255,255,255,0.2);">
@@ -524,10 +523,12 @@
     </div>
 
     <script>
+        // LÓGICA DE CURSOR, ABAS E SCROLL PRESERVADA
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
+            
             if (Math.random() > 0.7) {
                 const brilho = document.createElement('div');
                 brilho.className = 'brilho';
@@ -554,6 +555,7 @@
                     }
                 });
             }, { threshold: 0.15 });
+
             document.querySelectorAll('.revelar').forEach(item => observador.observe(item));
         }
 
@@ -562,6 +564,7 @@
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             let scrolled = (winScroll / height) * 100;
             document.getElementById("barra-progresso").style.width = scrolled + "%";
+
             document.querySelectorAll('.bg-text').forEach((text, index) => {
                 let speed = (index + 1) * 0.15;
                 text.style.transform = `translateX(${winScroll * speed}px)`;
@@ -571,7 +574,7 @@
         let slideIndex = 0;
         function autoSlider() {
             const slides = document.querySelectorAll('.slide-ambiente');
-            if(slides.length > 0) {
+            if (slides.length > 0) {
                 slides.forEach(s => s.classList.remove('active'));
                 slideIndex++;
                 if (slideIndex > slides.length) { slideIndex = 1; }
