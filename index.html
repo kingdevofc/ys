@@ -205,7 +205,7 @@
             outline: 1px solid var(--marrom-suave);
             outline-offset: 18px;
             background: var(--bege-escuro);
-            position: relative; /* Necessário para o slide */
+            position: relative;
         }
 
         .foto-container img { 
@@ -216,7 +216,6 @@
             transition: 1.5s ease; 
         }
 
-        /* AJUSTE DO SLIDER */
         .slide-ambiente {
             position: absolute;
             top: 0;
@@ -342,15 +341,17 @@
             * { cursor: auto; }
             .header-top { padding: 20px; }
             
+            /* AJUSTE LOGO E ANTES/DEPOIS NO MOBILE */
             .foto-container { 
-                height: auto !important; 
-                aspect-ratio: 16 / 9; 
+                height: 400px !important; /* Altura maior para evitar cortes */
+                aspect-ratio: 4 / 5; /* Proporção mais vertical para destacar a arte */
                 width: 100%; 
                 outline-offset: 8px; 
             }
             
+            /* Ajuste específico para as unhas na galeria manterem o quadrado */
             .galeria-grade { grid-template-columns: 1fr; gap: 40px; }
-            .galeria-grade .foto-container { height: auto; aspect-ratio: 1 / 1; width: 100%; }
+            .galeria-grade .foto-container { height: auto !important; aspect-ratio: 1 / 1; width: 100%; }
             
             .detalhe-card { position: relative; right: 0; margin: 20px auto; bottom: 0; width: 90%; }
             h1, h2 { font-size: 3rem; }
@@ -523,12 +524,10 @@
     </div>
 
     <script>
-        // CURSOR E BRILHO
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            
             if (Math.random() > 0.7) {
                 const brilho = document.createElement('div');
                 brilho.className = 'brilho';
@@ -539,7 +538,6 @@
             }
         });
 
-        // TROCA DE ABAS
         function mudarAba(idProxima) {
             document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
             const proxima = document.getElementById(idProxima);
@@ -548,7 +546,6 @@
             setTimeout(verificarRevelacao, 100);
         }
 
-        // REVELAÇÃO NO SCROLL
         function verificarRevelacao() {
             const observador = new IntersectionObserver((entradas) => {
                 entradas.forEach(entrada => {
@@ -557,35 +554,32 @@
                     }
                 });
             }, { threshold: 0.15 });
-
             document.querySelectorAll('.revelar').forEach(item => observador.observe(item));
         }
 
-        // PROGRESSO E PARALLAX TEXTO
         window.onscroll = function() {
             let winScroll = window.pageYOffset;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             let scrolled = (winScroll / height) * 100;
             document.getElementById("barra-progresso").style.width = scrolled + "%";
-
             document.querySelectorAll('.bg-text').forEach((text, index) => {
                 let speed = (index + 1) * 0.15;
                 text.style.transform = `translateX(${winScroll * speed}px)`;
             });
         };
 
-        // LÓGICA DO SLIDER AUTOMÁTICO
         let slideIndex = 0;
         function autoSlider() {
             const slides = document.querySelectorAll('.slide-ambiente');
-            slides.forEach(s => s.classList.remove('active'));
-            slideIndex++;
-            if (slideIndex > slides.length) { slideIndex = 1; }
-            slides[slideIndex - 1].classList.add('active');
-            setTimeout(autoSlider, 4000); // Troca a cada 4 segundos
+            if(slides.length > 0) {
+                slides.forEach(s => s.classList.remove('active'));
+                slideIndex++;
+                if (slideIndex > slides.length) { slideIndex = 1; }
+                slides[slideIndex - 1].classList.add('active');
+            }
+            setTimeout(autoSlider, 4000);
         }
 
-        // INICIALIZAÇÃO
         verificarRevelacao();
         autoSlider();
     </script>
